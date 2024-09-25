@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import sun from "../images/sun.png"
 import cloud from "../images/cloud.png"
 import axios from "axios"
+import { motion } from "framer-motion"
 
 const Weather = () => {
   const url = import.meta.env.VITE_URI
@@ -18,8 +19,6 @@ const Weather = () => {
     getData()
   }, [])
 
-  console.log(results)
-
   if (loading) {
     return (
       <div
@@ -35,13 +34,47 @@ const Weather = () => {
       className="bg-gray-800 text-white min-h-screen w-full flex justify-center items-center flex-col gap-5"
       style={{ backgroundColor: "#6392c8" }}
     >
-      <img src={cloud} alt="" className="w-[300px] absolute top-[33%]" />
-      <img src={sun} alt="" className="w-[300px]" />
+      <motion.img
+        initial={{ x: -200, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          delay: 4,
+        }}
+        src={cloud}
+        alt=""
+        className="w-[300px] absolute top-[33%]"
+      />
+      <motion.img
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{
+          duration: 2,
+          type: "spring",
+          ease: "easeInOut",
+        }}
+        src={sun}
+        alt=""
+        className="w-[300px]"
+      />
       <div className="flex justify-center items-center flex-col">
         <h1 className="text-center">{results.name}</h1>
         {results.main ? (
           <>
-            <h1 className="text-6xl">{Math.round(results.main.temp)}&deg;C</h1>
+            <motion.h1
+              initial={{ x: -500, opacity: 0, rotate: -180 }}
+              animate={{ x: 0, opacity: 1, rotate: 360 }}
+              transition={{
+                delay: 2,
+                duration: 3,
+                type: "spring",
+                ease: "easeInOut",
+              }}
+              className="text-6xl"
+            >
+              {Math.round(results.main.temp)}&deg;C
+            </motion.h1>
             <p>{results.weather[0].main}</p>
           </>
         ) : (
